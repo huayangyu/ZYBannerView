@@ -1,5 +1,6 @@
 //
 //  ZYBannerView.h
+//  DuoBao
 //
 //  Created by 张志延 on 15/10/17.
 //  Copyright (c) 2015年 tongbu. All rights reserved.
@@ -12,6 +13,9 @@
 
 @interface ZYBannerView : UIView
 
+/** 替代datasource的存在，为了改善性能*/
+@property (nonatomic ,strong) NSArray *imageArray;
+
 /** 是否需要循环滚动, 默认为 NO */
 @property (nonatomic, assign) IBInspectable BOOL shouldLoop;
 
@@ -22,7 +26,7 @@
 @property (nonatomic, assign) IBInspectable BOOL autoScroll;
 
 /** 自动滑动间隔时间(s), 默认为 3.0 */
-@property (nonatomic, assign) IBInspectable CGFloat scrollInterval;
+@property (nonatomic, assign) IBInspectable NSTimeInterval scrollInterval;
 
 /** pageControl, 可自由配置其属性 */
 @property (nonatomic, strong, readonly) UIPageControl *pageControl;
@@ -41,7 +45,7 @@
 @required
 
 - (NSInteger)numberOfItemsInBanner:(ZYBannerView *)banner;
-- (UIView *)banner:(ZYBannerView *)banner viewForItemAtIndex:(NSInteger)index;
+//- (UIView *)banner:(ZYBannerView *)banner viewForItemAtIndex:(NSInteger)index;
 
 @optional
 
