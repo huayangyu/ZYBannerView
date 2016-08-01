@@ -1,5 +1,6 @@
 //
 //  ZYBannerView.m
+//  DuoBao
 //
 //  Created by 张志延 on 15/10/17.
 //  Copyright (c) 2015年 tongbu. All rights reserved.
@@ -7,6 +8,8 @@
 
 #import "ZYBannerView.h"
 #import "ZYBannerCell.h"
+#import <AFNetworking.h>
+#import <UIImageView+AFNetworking.h>
 
 // 总共的item数
 #define ZY_TOTAL_ITEMS (self.itemCount * 20000)
@@ -72,7 +75,6 @@ static NSString *banner_footer = @"banner_footer";
     self.flowLayout.itemSize = self.bounds.size;
     self.flowLayout.footerReferenceSize = CGSizeMake(ZY_FOOTER_WIDTH, self.frame.size.height);
     self.collectionView.frame = self.bounds;
-    [self.collectionView reloadData];
     
     // pageControl
     if (CGRectEqualToRect(self.pageControl.frame, CGRectZero)) {
@@ -199,12 +201,15 @@ static NSString *banner_footer = @"banner_footer";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     ZYBannerCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:banner_item forIndexPath:indexPath];
- 
-    if ([self.dataSource respondsToSelector:@selector(banner:viewForItemAtIndex:)]) {
-        UIView *itemView = [self.dataSource banner:self viewForItemAtIndex:indexPath.item % self.itemCount];
-        itemView.frame = cell.bounds;
-        [cell addSubview:itemView];
-    }
+// 
+//    if ([self.dataSource respondsToSelector:@selector(banner:viewForItemAtIndex:)]) {
+//        UIView *itemView = [self.dataSource banner:self viewForItemAtIndex:indexPath.item % self.itemCount];
+//        itemView.frame = cell.bounds;
+//        [cell addSubview:itemView];
+//    }
+    NSString * urlString = [self.imageArray objectAtIndex:indexPath.item  % self.itemCount];
+    [cell.imageView setImageWithURL:[NSURL URLWithString:urlString]];
+    
     
     return cell;
 }
@@ -306,12 +311,6 @@ static NSString *banner_footer = @"banner_footer";
 #pragma mark - setters & getters
 #pragma mark 属性
 
-- (void)setFrame:(CGRect)frame
-{
-    self.pageControl.frame = CGRectZero;
-    [super setFrame:frame];
-}
-
 /**
  *  数据源
  */
@@ -396,14 +395,14 @@ static NSString *banner_footer = @"banner_footer";
 /**
  *  自动滑动间隔时间
  */
-- (void)setScrollInterval:(CGFloat)scrollInterval
+- (void)setScrollInterval:(NSTimeInterval)scrollInterval
 {
     _scrollInterval = scrollInterval;
     
     [self startTimer];
 }
 
-- (CGFloat)scrollInterval
+- (NSTimeInterval)scrollInterval
 {
     if (!_scrollInterval) {
         _scrollInterval = 3.0; // default
