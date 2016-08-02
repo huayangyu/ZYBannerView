@@ -7,12 +7,17 @@
 //
 
 #import "ZYBannerCell.h"
+#import <Masonry.h>
 
 @implementation ZYBannerCell
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         [self.contentView addSubview:self.imageView];
+
+        [_imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.mas_equalTo(self.contentView);
+        }];
     }
     return self;
 }
